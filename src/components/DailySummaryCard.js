@@ -1,20 +1,18 @@
 // src/components/DailySummaryCard.js
 
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHistory } from '@fortawesome/free-solid-svg-icons';
-import Image from 'next/image';
+import React, { useState } from "react";
+import Image from "next/image";
 
 const DailySummaryCard = ({ city, dailySummary }) => {
-  const [unit, setUnit] = useState('celsius'); // default to Celsius
+  const [unit, setUnit] = useState("celsius"); // default to Celsius
 
   // Temperature conversion function
   const convertTemperature = (temp) => {
     switch (unit) {
-      case 'kelvin':
+      case "kelvin":
         return (temp + 273.15).toFixed(2); // Celsius to Kelvin
-      case 'fahrenheit':
-        return ((temp * 9/5) + 32).toFixed(2); // Celsius to Fahrenheit
+      case "fahrenheit":
+        return ((temp * 9) / 5 + 32).toFixed(2); // Celsius to Fahrenheit
       default:
         return temp.toFixed(2); // Celsius
     }
@@ -24,33 +22,121 @@ const DailySummaryCard = ({ city, dailySummary }) => {
     setUnit(e.target.value);
   };
 
+    // Convert the timestamp to a readable date format
+    const formatDate = (d) => {
+        const date = new Date(d); // Convert from Unix timestamp
+        return date.toLocaleDateString("en-US", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+      };
+
   return (
-    <div className="card mt-4">
-      <div className="card-body">
-        <h5 className="card-title">
-          Daily Summary for {city} <FontAwesomeIcon icon={faHistory} />
-        </h5>
-        <div className="mb-3">
-          <label htmlFor="unitSelect" className="form-label">Select Temperature Unit:</label>
-          <select id="unitSelect" className="form-select" value={unit} onChange={handleUnitChange}>
-            <option value="celsius">Celsius</option>
-            <option value="kelvin">Kelvin</option>
-            <option value="fahrenheit">Fahrenheit</option>
-          </select>
+    <div className="rounded border-0 shadow p-5" style={{ width: "850px" ,backgroundColor:'#fff'}}>
+      <div className="d-flex flex-column justify-content-center align-items-center px-3">
+        <div className="w-100 d-flex flex-row justify-content-between align-items-end">
+          <div style={{ fontSize: 28, fontWeight: "600" }}>
+            Daily Summary for {city}
+          </div>
+          <div>
+            <select
+              id="unitSelect"
+              className="form-select border-0"
+              style={{ fontWeight: "500", fontSize: 18 }}
+              value={unit}
+              onChange={handleUnitChange}
+            >
+              <option value="kelvin">K</option>
+              <option value="celsius">°C</option>
+              <option value="fahrenheit">°F</option>
+            </select>
+          </div>
         </div>
-        <p>Average Temperature: {convertTemperature(dailySummary.avgTemp)} {unit === 'kelvin' ? 'K' : unit === 'celsius' ? '°C' : '°F'}</p>
-        <p>Max Temperature: {convertTemperature(dailySummary.maxTemp)} {unit === 'kelvin' ? 'K' : unit === 'celsius' ? '°C' : '°F'}</p>
-        <p>Min Temperature: {convertTemperature(dailySummary.minTemp)} {unit === 'kelvin' ? 'K' : unit === 'celsius' ? '°C' : '°F'}</p>
-        <p>Average Humidity: {dailySummary.avgHumidity}%</p>
-        <p>Average Wind Speed: {dailySummary.avgWindSpeed} m/s</p>
-        <p>Dominant Weather Condition: {dailySummary.dominantCondition}</p>
-        <Image 
-          src={`/${dailySummary.dominantCondition}.png`} 
-          alt={`${dailySummary.dominantCondition}`} 
-          width={500} 
-          height={500} 
-          className="img-fluid" 
-        />
+
+        {/* Date display */}
+        <div
+          style={{ fontSize: "16px", fontWeight: "400" ,fontStyle:'italic'}}
+          className="w-100 mb-2"
+        >
+          {formatDate(dailySummary.createdAt)}
+        </div>
+
+        <div className="d-flex flex-row justify-content-around align-items-end gap-3 w-100 mt-4">
+          <Image
+            src={`/${dailySummary.dominantCondition}.png`}
+            alt={`${dailySummary.dominantCondition}`}
+            width={300}
+            height={300}
+            className="img-fluid"
+          />
+          <div className="d-flex flex-column justify-content-between gap-5 ">
+            <div className="d-flex flex-row justify-content-around w-100">
+              <div style={{ fontSize: 36 }}>
+                {convertTemperature(dailySummary.avgTemp)}{" "}
+                {unit === "kelvin" ? "K" : unit === "celsius" ? "°C" : "°F"}
+              </div>
+              <div>
+                <div className="mb-2">
+                  {`${convertTemperature(dailySummary.maxTemp)} ${
+                    unit === "kelvin" ? "K" : unit === "celsius" ? "°C" : "°F"
+                  }`}
+                  <Image
+                    src={`/hot.gif`}
+                    alt="max temp"
+                    width={28}
+                    height={28}
+                    className="ms-2"
+                  />
+                </div>
+                <div>
+                  {`${convertTemperature(dailySummary.minTemp)} ${
+                    unit === "kelvin" ? "K" : unit === "celsius" ? "°C" : "°F"
+                  }`}
+                  <Image
+                    src={`/cold.gif`}
+                    alt="min temp"
+                    width={28}
+                    height={28}
+                    className="ms-2"
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="mb-3">
+                <Image
+                  src={`/Weather.gif`}
+                  width={24}
+                  height={24}
+                  className="me-2"
+                />
+                Dominant Weather Condition: {dailySummary.dominantCondition}
+              </div>
+
+              <div className="mb-3">
+                <Image
+                  src={`/Humidity.gif`}
+                  width={24}
+                  height={24}
+                  className="me-2"
+                />
+                Avg Humidity: {dailySummary.avgHumidity} %
+              </div>
+
+              <div className="mb-3">
+                <Image
+                  src={`/WindSpeed.gif`}
+                  width={24}
+                  height={24}
+                  className="me-2"
+                />
+                Avg Wind Speed: {dailySummary.avgWindSpeed} m/s
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
