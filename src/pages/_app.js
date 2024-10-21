@@ -13,6 +13,7 @@ function MyApp({ Component, pageProps }) {
   }, []);
   return (
     <Layout>
+      <title>Weather</title>
       <Component {...pageProps} />
     </Layout>
   );
