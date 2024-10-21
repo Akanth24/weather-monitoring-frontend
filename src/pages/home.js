@@ -3,6 +3,7 @@ import axios from "axios";
 import WeatherCard from "@/components/WeatherCard";
 import Image from "next/image";
 import LoadingScreen from "@/components/LoadingScreen";
+import NoDataFound from "@/components/NoDataFound";
 
 const BACKEND_API_URL = process.env.BACKEND_API_URL;
 // Fetch cities and weather conditions from environment variables
@@ -114,10 +115,12 @@ const Home = () => {
       ) : weatherData ? (
         <WeatherCard weather={weatherData} />
       ) : error ? (
-        <div className="alert alert-danger mt-3">{error}</div>
+        <div className="w-100 mt-4">
+          <NoDataFound message={error} />
+        </div>
       ) : (
-        <div className="alert alert-warning mt-3">
-          No weather details found for the entered city.
+        <div className="w-100 mt-4">
+          <NoDataFound message={`No weather details found for the entered city.`} />
         </div>
       )}
     </div>

@@ -14,22 +14,22 @@ import {
 } from "recharts";
 import Image from "next/image";
 import LoadingScreen from "@/components/LoadingScreen";
+import NoDataFound from "@/components/NoDataFound";
 
 const BACKEND_API_URL = process.env.BACKEND_API_URL;
 // Fetch cities and weather conditions from environment variables
 const cities = process.env.CITIES.split(",");
 
 const WeatherHistory = () => {
+  const today = new Date().toISOString().slice(0, 10);
   const [city, setCity] = useState("Hyderabad");
   const [history, setHistory] = useState([]);
   const [dayHistory, setDayHistory] = useState([]);
-  const [selectedDate, setSelectedDate] = useState("2024-10-21");
+  const [selectedDate, setSelectedDate] = useState(today);
   const [days, setDays] = useState(2);
   const [dailySummary, setDailySummary] = useState(null);
   const [loadHistory, setLoadHistory] = useState(true);
   const [loadDayHistory, setLoadDayHistory] = useState(true);
-
-  console.log(dayHistory);
 
   // Fetch weather history
   const fetchWeatherHistory = async () => {
@@ -61,7 +61,8 @@ const WeatherHistory = () => {
       );
       setDayHistory(response.data);
     } catch (error) {
-      Swal.fire("Error", "Could not fetch weather history", "error");
+      console.log("Could not fetch weather history", error);
+      setDayHistory("");
     } finally {
       setLoadDayHistory(false);
     }
@@ -95,6 +96,7 @@ const WeatherHistory = () => {
 
   // Prepare data for graph
   const prepareGraphData = () => {
+    if (!dayHistory) return;
     return dayHistory
       .slice()
       .reverse()
@@ -142,116 +144,160 @@ const WeatherHistory = () => {
         <DailySummaryCard city={city} dailySummary={dailySummary} />
       )}
 
-      <div className="d-flex flex-column align-items-center shadow rounded border-0 p-5 w-100 mb-3" style={{background:'linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)'}}>
-        <div className="d-flex flex-row justify-content-center w-50">
-          <div htmlFor="date-picker" className="">
-            Select Date:
+      <div
+        className="d-flex flex-column align-items-center shadow rounded border-0 p-5 w-100 mb-3"
+        style={{
+          background: "linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)",
+        }}
+      >
+        <div className="d-flex flex-row justify-content-between align-items-center w-100">
+          <div style={{ fontWeight: 400, fontSize: 24 }}>Trends for {city}</div>
+          <div className="d-flex flex-row justify-content-center align-items-center gap-2">
+            <div
+              htmlFor="date-picker"
+              className=""
+              style={{ fontWeight: 400, fontSize: 18 }}
+            >
+              Select Date:
+            </div>
+            <div>
+              <input
+                type="date"
+                id="date-picker"
+                className="form-control shadow border-0"
+                value={selectedDate}
+                onChange={handleDateChange}
+                // Ensure that the date input is in the YYYY-MM-DD format
+                pattern="\d{4}-\d{2}-\d{2}"
+                max={today}
+              />
+            </div>
           </div>
-          <input
-            type="date"
-            id="date-picker"
-            className="form-control"
-            value={selectedDate}
-            onChange={handleDateChange}
-            // Ensure that the date input is in the YYYY-MM-DD format
-            pattern="\d{4}-\d{2}-\d{2}"
-          />
         </div>
+
         {loadDayHistory ? (
           <LoadingScreen />
-        ) : (
-          history.length > 0 && (
-            <div className="w-100">
-              <div className="card border-0 shadow p-3 mt-5 w-100">
-                <h5 className="px-4 py-2">Temperature Trends for {city}</h5>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart
-                    data={prepareGraphData()}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
+        ) : dayHistory.length > 0 ? (
+          <div className="w-100">
+            <div className="card border-0 shadow p-3 mt-4 w-100">
+              <h5 className="px-4 py-2">Temperature </h5>
+              <ResponsiveContainer width="100%" height={400}>
+                <LineChart
+                  data={prepareGraphData()}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
 
-                    <Line type="monotone" dataKey="maxTemp" stroke="#82ca9d" />
-                    <Line
-                      type="monotone"
-                      dataKey="avgTemp"
-                      stroke="#8884d8"
-                      activeDot={{ r: 8 }}
-                    />
-                    <Line type="monotone" dataKey="minTemp" stroke="#ff7300" />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-
-              <div className="card border-0 shadow p-3 mt-5 w-100">
-                <h5 className="px-4 py-2">Humidity Trends for {city}</h5>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart
-                    data={prepareGraphData()}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="avgHumidity"
-                      stroke="#82ca9d"
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-
-              <div className="card border-0 shadow p-3 mt-5 w-100">
-                <h5 className="px-4 py-2">Wind Speed Trends for {city}</h5>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart
-                    data={prepareGraphData()}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="avgWindSpeed"
-                      stroke="#82ca9d"
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
+                  <Line
+                    type="monotone"
+                    dataKey="maxTemp"
+                    stroke="#82ca9d"
+                    dot={false}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="avgTemp"
+                    stroke="#0a48b2"
+                    dot={false}
+                    activeDot={{ r: 8 }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="minTemp"
+                    stroke="#ff7300"
+                    dot={false}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
-          )
+
+            <div className="card border-0 shadow p-3 mt-5 w-100">
+              <h5 className="px-4 py-2">Humidity </h5>
+              <ResponsiveContainer width="100%" height={400}>
+                <LineChart
+                  data={prepareGraphData()}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="avgHumidity"
+                    stroke="#82ca9d"
+                    dot={false}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+
+            <div className="card border-0 shadow p-3 mt-5 w-100">
+              <h5 className="px-4 py-2">Wind Speed </h5>
+              <ResponsiveContainer width="100%" height={400}>
+                <LineChart
+                  data={prepareGraphData()}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="avgWindSpeed"
+                    stroke="#0a48b2"
+                    dot={false}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        ) : (
+          <div className="w-100 mt-4">
+            <NoDataFound message={`No weather history available`} />
+          </div>
         )}
       </div>
 
       <div className="shadow rounded border-0 p-3 w-100 ">
         {/* Days Selection */}
-        <div className="form-group mt-4 w-100">
-          <label htmlFor="days">Select Days of History:</label>
-          <select
-            className="form-select"
-            id="days"
-            value={days}
-            onChange={(e) => setDays(e.target.value)}
-          >
-            <option value="1">1 Day</option>
-            <option value="2">2 Days</option>
-            <option value="3">3 Days</option>
-            <option value="5">5 Days</option>
-            <option value="7">7 Days</option>
-          </select>
+        <div className="d-flex flex-row justify-content-between align-items-center w-100">
+          <div style={{ fontWeight: 400, fontSize: 24 }}>
+            Weather History for {city} (Past {days} Days)
+          </div>
+          <div className="d-flex flex-row justify-content-center align-items-center gap-2">
+            <div
+              htmlFor="days"
+              className=""
+              style={{ fontWeight: 400, fontSize: 18 }}
+            >
+              Select Days:
+            </div>
+            <div>
+              <select
+                className="form-select shadow border-0"
+                id="days"
+                value={days}
+                onChange={(e) => setDays(e.target.value)}
+              >
+                <option value="1">1 Day</option>
+                <option value="2">2 Days</option>
+                <option value="3">3 Days</option>
+                <option value="5">5 Days</option>
+                <option value="7">7 Days</option>
+              </select>
+            </div>
+          </div>
         </div>
 
-        {history.length > 0 && (
+        {history.length > 0 ? (
           <div
             className="card border-0 shadow mt-4 w-100 p-5"
             style={{
@@ -261,22 +307,21 @@ const WeatherHistory = () => {
             {loadHistory ? (
               <LoadingScreen />
             ) : (
-              <>
-                <h5 className="px-4 mb-5">
-                  Weather History for {city} (Past {days} Days)
-                </h5>
-                <div
-                  className="d-flex flex-row gap-3 w-100 rounded shadow p-1"
-                  style={{ overflowX: "scroll" }}
-                >
-                  {history.map((day, index) => (
-                    <div key={index}>
-                      <DailySummaryCard city={city} dailySummary={day} />
-                    </div>
-                  ))}
-                </div>
-              </>
+              <div
+                className="d-flex flex-row gap-3 w-100 rounded shadow p-1"
+                style={{ overflowX: "scroll" }}
+              >
+                {history.map((day, index) => (
+                  <div key={index}>
+                    <DailySummaryCard city={city} dailySummary={day} />
+                  </div>
+                ))}
+              </div>
             )}
+          </div>
+        ) : (
+          <div className="w-100 mt-4">
+            <NoDataFound message={`No weather history available`} />
           </div>
         )}
       </div>
