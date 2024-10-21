@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router"; // Import the router
 import "../assets/css/Navbar.css";
+import Image from "next/image";
 
 function Navbar() {
   const router = useRouter(); // Access the router object to get the current path
@@ -16,7 +17,14 @@ function Navbar() {
             href={"/home"}
             className="navbar-brand text-light d-flex align-items-center px-4 px-lg-5"
           >
-            <div className="nav-item text-light nav-link ">Weather Monitoring</div>
+            <Image
+              src={`/Clouds.png`}
+              alt="weather icon"
+              width={50}
+              height={50}
+              className="me-3"
+            />
+            <div className="nav-item text-light nav-link " style={{fontWeight:400,fontSize:26}}>Weather Monitoring</div>
           </Link>
           <button
             type="button"
@@ -35,7 +43,6 @@ function Navbar() {
                     ? "focus-ring focus-ring-light active"
                     : ""
                 }`}
-                style={{ fontSize: "19px" }}
               >
                 Home
               </Link>
@@ -47,36 +54,20 @@ function Navbar() {
                     ? "focus-ring focus-ring-light active"
                     : ""
                 }`}
-                style={{ fontSize: "19px" }}
               >
                 History 
               </Link>
 
               <Link
-                href="/thresholdForm"
+                href="/threshold"
                 className={`nav-item nav-link btn ${
-                  router.pathname === "/thresholdForm"
+                  router.pathname === "/threshold"
                     ? "focus-ring focus-ring-light active"
                     : ""
                 }`}
-                style={{ fontSize: "19px" }}
               >
                 Threshold
               </Link>
-
-              
-
-              {/* <Link
-                href="/evaluateRule"
-                className={`nav-item nav-link btn ${
-                  router.pathname === "/evaluateRule"
-                    ? "focus-ring focus-ring-light active"
-                    : ""
-                }`}
-                style={{ fontSize: "19px" }}
-              >
-                Evaluate Rule
-              </Link> */}
             </div>
           </div>
         </nav>

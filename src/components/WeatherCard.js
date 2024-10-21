@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const WeatherCard = ({ weather }) => {
   const [unit, setUnit] = useState("celsius"); // default unit is Kelvin
@@ -25,19 +27,29 @@ const WeatherCard = ({ weather }) => {
   // Convert the timestamp to a readable date format
   const formatDate = (timestamp) => {
     const date = new Date(timestamp * 1000); // Convert from Unix timestamp
-    return date.toLocaleDateString("en-US", {
-      weekday: "long",
+    return date.toLocaleString("en-IN", {
+      timeZone: "Asia/Kolkata",
       year: "numeric",
       month: "long",
       day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
     });
   };
 
   return (
-    <div className="rounded border-0 shadow p-5" style={{ width: "800px",backgroundColor:'#fff'}} >
+    <div
+      className="rounded border-0 shadow p-5"
+      style={{ width: "800px", backgroundColor: "#fff" }}
+    >
       <div className="d-flex flex-column justify-content-center align-items-center px-3">
         <div className="w-100 d-flex flex-row justify-content-between align-items-end">
-          <div style={{ fontSize: 32, fontWeight: "600" }}>{weather.name}</div>
+          <div style={{ fontSize: 32, fontWeight: "600" }}>
+             <FontAwesomeIcon icon={faLocationDot} bounce style={{color: "#578dea",}} size="sm" className="me-2" />
+            {weather.name}
+          </div>
           <div>
             <select
               id="unitSelect"
@@ -55,7 +67,7 @@ const WeatherCard = ({ weather }) => {
 
         {/* Date display */}
         <div
-          style={{ fontSize: "16px", fontWeight: "400" ,fontStyle:'italic'}}
+          style={{ fontSize: "16px", fontWeight: "400", fontStyle: "italic" }}
           className="w-100 mb-2"
         >
           {formatDate(weather.dt)}
@@ -71,7 +83,7 @@ const WeatherCard = ({ weather }) => {
           />
           <div className="d-flex flex-column justify-content-between gap-4 ">
             <div className="d-flex flex-row justify-content-center w-100">
-              <div style={{ fontSize: 40}}>
+              <div style={{ fontSize: 40 }}>
                 {convertTemperature(weather.main.temp)}{" "}
                 {unit === "kelvin" ? "K" : unit === "celsius" ? "°C" : "°F"}
               </div>
@@ -79,7 +91,19 @@ const WeatherCard = ({ weather }) => {
             <div>
               <div className="mb-3">
                 <Image
+                  src={`/Feelslike.gif`}
+                  alt="Feels like"
+                  width={24}
+                  height={24}
+                  className="me-2"
+                />
+                Feels Like: {convertTemperature(weather.main.feels_like)}{" "}
+                {unit === "kelvin" ? "K" : unit === "celsius" ? "°C" : "°F"}
+              </div>
+              <div className="mb-3">
+                <Image
                   src={`/Weather.gif`}
+                  alt="Conition"
                   width={24}
                   height={24}
                   className="me-2"
@@ -90,21 +114,23 @@ const WeatherCard = ({ weather }) => {
               <div className="mb-3">
                 <Image
                   src={`/Humidity.gif`}
+                  alt="humidity"
                   width={24}
                   height={24}
                   className="me-2"
                 />
-                Humidity: {weather.main.humidity} %
+                Humidity: {weather.main.humidity.toFixed(2)} %
               </div>
 
               <div className="mb-3">
                 <Image
                   src={`/WindSpeed.gif`}
+                  alt="wind speed"
                   width={24}
                   height={24}
                   className="me-2"
                 />
-                Wind Speed: {weather.wind.speed} m/s
+                Wind Speed: {weather.wind.speed.toFixed(2)} m/s
               </div>
             </div>
           </div>

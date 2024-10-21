@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const DailySummaryCard = ({ city, dailySummary }) => {
   const [unit, setUnit] = useState("celsius"); // default to Celsius
-
+  
   // Temperature conversion function
   const convertTemperature = (temp) => {
     switch (unit) {
@@ -22,19 +22,22 @@ const DailySummaryCard = ({ city, dailySummary }) => {
     setUnit(e.target.value);
   };
 
-    // Convert the timestamp to a readable date format
-    const formatDate = (d) => {
-        const date = new Date(d); // Convert from Unix timestamp
-        return date.toLocaleDateString("en-US", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        });
-      };
+  // Convert the timestamp to a readable date format
+  const formatDate = (d) => {
+    const date = new Date(d);
+    return date.toLocaleDateString("en-IN", {
+      timeZone: "Asia/Kolkata",
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+  };
 
   return (
-    <div className="rounded border-0 shadow p-5" style={{ width: "850px" ,backgroundColor:'#fff'}}>
+    <div
+      className="rounded border-0 shadow p-5"
+      style={{ width: "850px", backgroundColor: "#fff" }}
+    >
       <div className="d-flex flex-column justify-content-center align-items-center px-3">
         <div className="w-100 d-flex flex-row justify-content-between align-items-end">
           <div style={{ fontSize: 28, fontWeight: "600" }}>
@@ -57,10 +60,10 @@ const DailySummaryCard = ({ city, dailySummary }) => {
 
         {/* Date display */}
         <div
-          style={{ fontSize: "16px", fontWeight: "400" ,fontStyle:'italic'}}
+          style={{ fontSize: "16px", fontWeight: "400", fontStyle: "italic" }}
           className="w-100 mb-2"
         >
-          {formatDate(dailySummary.createdAt)}
+          {formatDate(dailySummary.date)}
         </div>
 
         <div className="d-flex flex-row justify-content-around align-items-end gap-3 w-100 mt-4">
@@ -108,6 +111,7 @@ const DailySummaryCard = ({ city, dailySummary }) => {
               <div className="mb-3">
                 <Image
                   src={`/Weather.gif`}
+                  alt="condition"
                   width={24}
                   height={24}
                   className="me-2"
@@ -118,21 +122,23 @@ const DailySummaryCard = ({ city, dailySummary }) => {
               <div className="mb-3">
                 <Image
                   src={`/Humidity.gif`}
+                  alt="Humidity"
                   width={24}
                   height={24}
                   className="me-2"
                 />
-                Avg Humidity: {dailySummary.avgHumidity} %
+                Avg Humidity: {dailySummary.avgHumidity.toFixed(2)} %
               </div>
 
               <div className="mb-3">
                 <Image
                   src={`/WindSpeed.gif`}
+                  alt="wind speed"
                   width={24}
                   height={24}
                   className="me-2"
                 />
-                Avg Wind Speed: {dailySummary.avgWindSpeed} m/s
+                Avg Wind Speed: {dailySummary.avgWindSpeed.toFixed(2)} m/s
               </div>
             </div>
           </div>

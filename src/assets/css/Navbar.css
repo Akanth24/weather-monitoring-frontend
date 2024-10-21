@@ -1,19 +1,16 @@
 .navbar {
-    background-color: #0a48b2;
-    /* background: linear-gradient(90deg, #0a48b2 0%, rgb(32, 35, 205) 56%, rgb(83, 29, 177) 100%); */
-}
-
-.navbar-brand {
-    font-size: 1.5rem;
-    font-weight: 500;
+    background: linear-gradient(120deg, #87b1f6 0%, #a1dcf7 100%);
 }
 
 .navbar-nav .nav-link {
-    transition: background-color 0.3s, color 0.3s;
-    color: #fff;
+    transition: ease 0.4s;
+    color: #555;
+    font-weight: 400;
+    font-size: 20px;
 }
 
 .navbar-nav .nav-link:hover {
+    transform: scale(1.1);
     background-color: #ffffff; /* Change to the color you want on hover */
     color: #000; /* Change to the color you want on hover */
 }
@@ -21,14 +18,8 @@
 /* navBar.css */
 
 .nav-item.active {
-    background-color: white;
+    transform: scale(1.2);
     color: black !important;
-    border-radius: 5px; /* Optional: To make the background look better */
   }
-  
-  /* Ensure other nav items retain their default color */
-  .nav-item {
-    color: white;
-    transition: background-color 0.3s ease; /* Smooth transition effect */
-  }
+
   
