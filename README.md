@@ -113,6 +113,12 @@ The frontend of the weather monitoring system provides a user-friendly interface
 |---------------------|
 | ![Email Alert](readme_images/email.png) |
 
+### 5. Loading and Not Found Page
+
+| Loading Page | Not Found Page |
+|-----------------------|---------------------|
+| ![Loading Page](readme_images/loading.png) | ![Not Found Page](readme_images/not_found.png) |
+
 ---
 
 ## Technologies Used
