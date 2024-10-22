@@ -1,6 +1,6 @@
 # Weather Monitoring Frontend
 
-This is the frontend for the Weather Monitoring application. It is built using Next.js and interacts with the backend service to create, combine, and evaluate rules.
+This is the frontend for the Weather Monitoring application. It is built using Next.js and interacts with the backend service to provide real-time weather data, daily summaries, historical trends, and alert configurations.
 
 ## Table of Contents
 - [Prerequisites](#prerequisites)
