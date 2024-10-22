@@ -99,13 +99,13 @@ The frontend of the weather monitoring system provides a user-friendly interface
 |-----------|
 | ![Thresholds](readme_images/threshold.png) |
 
-| Thresholds create |
+| Create Threshold |
 |-----------|
-| ![Thresholds create](readme_images/create_threshold.png) |
+| ![Create Threshold](readme_images/create_threshold.png) |
 
-| Threshold Edit | Threshold Delete |
+| Edit Threshold | Delete Threshold |
 |---------------|-----------------|
-| ![Threshold Edit](readme_images/edit_threshold.png) | ![Threshold Delete](readme_images/delete_threshold.png) |
+| ![Edit Threshold ](readme_images/edit_threshold.png) | ![Delete Threshold](readme_images/delete_threshold.png) |
 
 ### 4. Email Alert
 
