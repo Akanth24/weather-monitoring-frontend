@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Weather Monitoring Frontend
 
-## Getting Started
+This is the frontend for the Weather Monitoring application. It is built using Next.js and interacts with the backend service to create, combine, and evaluate rules.
 
-First, run the development server:
+## Table of Contents
+- [Prerequisites](#prerequisites)
+- [Installation and Running the Application](#installation)
+- [Project Description](#project-description)
+- [UI Walkthrough](#ui-walkthrough)
+- [Technologies Used](#technologies-used)
 
+---
+
+## Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+- **Node.js**: You need to have Node.js installed on your machine. You can download it from [Node.js official website](https://nodejs.org/).
+- **npm**: npm (Node Package Manager) is usually included with Node.js. You can verify the installation by running:
+  ```bash
+  npm -v
+  ```
+
+## Installation
+
+### 1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/Akanth24/weather-monitoring-frontend.git
+```
+```bash
+cd weather-monitoring-frontend
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 3. Run the Application
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Description
+#### Weather Monitoring System with Visualizations
+The frontend of the weather monitoring system provides a user-friendly interface for displaying real-time weather data, daily summaries, and triggered alerts. The data is visualized to help users understand weather trends over time and monitor specific alert conditions. Users can also configure alert thresholds through the UI.
 
-## Learn More
+#### Features:
 
-To learn more about Next.js, take a look at the following resources:
+#### Real-time Weather Display:
+- Users can view current weather conditions (temperature, humidity, wind speed, etc.) for metro cities in India, including other cities they enter manually.
+- Temperature units are customizable between Celsius, Kelvin, and Fahrenheit based on user preference.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### Daily Weather Summaries:
+- Visualizations show daily weather summaries, including:
+    - Average, minimum, and maximum temperatures.
+    - Average humidity and wind speed.
+    - Dominant weather condition for the day (e.g., clear, rain).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- The history page shows a graphical analysis of temperature, humidity, and wind speed for specific dates.
 
-## Deploy on Vercel
+- Users can retrieve daily summaries for past 1, 2, 3, 5, or 7 days.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### Threshold page
+- Users can set thresholds for conditions like temperature, weather conditions and receive notifications over email when the thresholds are breached.
+- The interface allows managing alerts by creating, editing, and deleting thresholds.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## UI Walkthrough
+
+### 1. Home Page
+
+| Home Page |
+|-----------|
+| ![Home Page](readme_images/homepage.png) |
+
+
+### 2. History Page
+
+| Daily Weather Summary | Temperature Graph |
+|-----------------------|---------------------|
+| ![Daily Weather Summary](readme_images/history_1.png) | ![Temperature Graph](readme_images/history_2.png) |
+
+| Humidity Graph | Wind Speed Graph |
+|----------|---------------|
+| ![Humidity Graph](readme_images/history_3.png) | ![Wind Speed Graph](readme_images/history_4.png) |
+
+
+| Past Days History |
+|-----------|
+| ![Past Days History](readme_images/history_5.png) |
+
+
+
+### 3. Threshold Page
+
+| Thresholds |
+|-----------|
+| ![Thresholds](readme_images/threshold.png) |
+
+| Thresholds create |
+|-----------|
+| ![Thresholds create](readme_images/create_threshold.png) |
+
+| Threshold Edit | Threshold Delete |
+|---------------|-----------------|
+| ![Threshold Edit](readme_images/edit_threshold.png) | ![Threshold Delete](readme_images/delete_threshold.png) |
+
+### 4. Email Alert
+
+| Email Alert |
+|---------------------|
+| ![Email Alert](readme_images/email.png) |
+
+---
+
+## Technologies Used
+
+- **Next.js** - A React framework for building server-side rendered applications.
+- **Axios** - Promise-based HTTP client for interacting with the backend.
+- **React** - A JavaScript library for building user interfaces.
+- **Bootstrap** - For UI styling and responsive design.
+- **SweetAlert2** - Provides customizable and user-friendly alert notifications.
