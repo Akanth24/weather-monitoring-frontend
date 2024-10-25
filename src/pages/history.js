@@ -41,7 +41,10 @@ const WeatherHistory = () => {
           params: { city, days },
         }
       );
-      setHistory(response.data);
+      // Sort response data by date before setting it to state
+      const sortedData = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+      setHistory(sortedData);
+
     } catch (error) {
       Swal.fire("Error", "Could not fetch weather history", "error");
     } finally {
