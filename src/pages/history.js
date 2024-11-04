@@ -91,7 +91,7 @@ const WeatherHistory = () => {
 
   useEffect(() => {
     fetchWeatherHistoryByDate();
-  }, [selectedDate]);
+  }, [selectedDate,city]);
 
   const handleDateChange = (e) => {
     setSelectedDate(e.target.value);
